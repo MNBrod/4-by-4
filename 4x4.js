@@ -16,6 +16,9 @@ var Board = function () {
 Board.prototype.changeVal = function ([x, y], val) {
   this.board[x][y] = val;
 }
+Board.prototype.print = function () {
+  console.log(this.board.join('\n'));
+}
 /**
  * finds the solution to a puzzle given a partial solution and a set of hints
  * @param {Board} partial
@@ -125,28 +128,7 @@ var fillObv = function (board, hints) {
 }
 
 
-
 var bard = new Board();
 bard = fillObv(bard, hints);
-console.log(bard.board.join('\n'));
-//console.log(solver(bard));
+bard.print();
 
-//
-
-/*
-
-// find a single solution (helper function)
-boolean solve ( partial solution, subproblem ) {
- if the partial solution is complete,
- return true (it is a solution)
- else
- for each legal next choice
- add the choice to the partial solution
- generate new subproblem
- if solve(updated partial solution,
- new subproblem)
- return true (have a solution!)
- undo choice (restore partial solution)
- return false
-}
-*/
