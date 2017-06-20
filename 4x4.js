@@ -31,13 +31,16 @@ Board.prototype.changeVal = function ([x, y], val) {
 Board.prototype.print = function () {
   console.log(this.board.join('\n'));
 }
+Board.prototype.clone = function () {
+  return Object.assign({}, this);
+}
 /**
  * finds the solution to a puzzle given a partial solution and a set of hints
  * @param {Board} partial
  * @param {array} hints to check against
  */
-var solver = function (partial, hints) {
-  if (isComplete(partial, hints)) {
+var solver = function (partial, hints, [x ,y]) {
+  if (isComplete(partial, hints, [x, y])) {
     return true;
   }
   else {
@@ -45,12 +48,14 @@ var solver = function (partial, hints) {
       for (var col = 0; col < 4; col++) {
         if (partial[row][col] === 0) {
           for (var height = 1; height < 5; height++) {
-            var tempHeight = partial[row][col];
-            partial.changeVal([row, col], height);
-            if (solver(partial)) {
-              return partial;
+            //added creation of a new board every single time this is called
+            var testBoard = partial.clone();
+            var tempHeight = testBoard[row][col];
+            testBoard.changeVal([row, col], height);
+            if (solver(testBoard, [row, col])) {
+              return testBoard;
             } else {
-              partial.changeVal([row, col], tempHeight);
+              testBoard.changeVal([row, col], tempHeight);
               return false;
             }
           }
@@ -142,5 +147,6 @@ var fillObv = function (board, hints) {
 
 var bard = new Board();
 bard = fillObv(bard, hints);
+solver(bard, [-1, -1]);
 bard.print();
 
