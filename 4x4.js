@@ -1,6 +1,8 @@
 /**
  * creates a new board, initializing it to a 4x4 array with all values set to 0
  */
+
+var count = 0;
 var Board = function () {
   this.board = [];
   this.rowsComplete = {
@@ -31,38 +33,56 @@ Board.prototype.changeVal = function ([x, y], val) {
 Board.prototype.print = function () {
   console.log(this.board.join('\n'));
 }
-Board.prototype.clone = function () {
-  return Object.assign({}, this);
-}
 /**
  * finds the solution to a puzzle given a partial solution and a set of hints
  * @param {Board} partial
  * @param {array} hints to check against
  */
-var solver = function (partial, hints, [x ,y]) {
+var solver = function (partial, hints, [x, y]) {
+  partial.print();
   if (isComplete(partial, hints, [x, y])) {
     return true;
   }
   else {
     for (var row = 0; row < 4; row++) {
       for (var col = 0; col < 4; col++) {
-        if (partial[row][col] === 0) {
-          for (var height = 1; height < 5; height++) {
-            //added creation of a new board every single time this is called
-            var testBoard = partial.clone();
-            var tempHeight = testBoard[row][col];
-            testBoard.changeVal([row, col], height);
-            if (solver(testBoard, [row, col])) {
-              return testBoard;
-            } else {
-              testBoard.changeVal([row, col], tempHeight);
-              return false;
-            }
+        //if (partial.board[row][col] === 0) {
+        for (var height = 1; height < 5; height++) {
+          console.log(height);
+          var testBoard = new Board();
+          testBoard.board = JSON.parse(JSON.stringify(partial.board))
+          testBoard.rowsComplete = partial.rowsComplete;
+          testBoard.colComplete = partial.colComplete;
+
+          //testBoard.prototype = Object.create(Board.prototype);
+          var tempHeight = testBoard.board[row][col];
+          testBoard.changeVal([row, col], height);
+          console.log("\n\n");
+          testBoard.print();
+          console.log("\njoined wiht\n");
+          partial.print();
+          console.log("\n\n");
+          if (solver(testBoard, hints, [row, col]) === true) {
+            debugger;
+            console.log("got here?");
+            return testBoard;
           }
+            debugger;
+            testBoard.changeVal([row, col], tempHeight);
+            //return false;
+
         }
+        // }
       }
     }
   }
+}
+
+var solve = function (pSol, hints, [x, y]) {
+  //check if the partial solution given is an answer.
+    //if it is, then return it.
+    //otherwise, continue:
+  //
 }
 
 /**
@@ -71,7 +91,13 @@ var solver = function (partial, hints, [x ,y]) {
  * @param {Board} board
  */
 var isComplete = function (board) {
-  return true;
+  if (board === [[2, 1, 4, 3],
+  [3, 4, 1, 2],
+  [4, 2, 3, 1],
+  [1, 3, 2, 4]]) {
+    return true;
+  }
+  return false;
 }
 /**
  * stores the coordinate that a hint is connected too
@@ -145,8 +171,13 @@ var fillObv = function (board, hints) {
 }
 
 
-var bard = new Board();
-bard = fillObv(bard, hints);
-solver(bard, [-1, -1]);
-bard.print();
+//var bard = new Board();
+//bard = fillObv(bard, hints);
+//console.log(solver(bard, hints, [-1, -1]), "here");
+
+
+var combos = permut('1234');
+
+
+//bard.print();
 
