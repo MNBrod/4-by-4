@@ -3,6 +3,19 @@
  */
 var Board = function () {
   this.board = [];
+  this.rowsComplete = {
+    0: false,
+    1: false,
+    2: false,
+    3: false
+  }
+  this.colComplete = {
+    0: false,
+    1: false,
+    2: false,
+    3: false
+  }
+
   for (var i = 0; i < 4; i++) {
     this.board.push([0, 0, 0, 0]);
   }
@@ -77,7 +90,7 @@ var hintCoord = {
   14: [1, 0],
   15: [0, 0]
 }
-var hints = [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var hints = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 /**
  * takes hints, and fills in the ones and fours on the board with the proper
  * values.
