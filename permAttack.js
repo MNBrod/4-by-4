@@ -1,3 +1,4 @@
+
 var combos = {};
 var rowPosibs = {
     0: [],
@@ -124,31 +125,31 @@ var reverseArr = function (arr) {
     return result;
 }
 
-// var validateBoard = function (arr) {
-//     console.log(arr.join("\n"));
-//     arr = rotate(arr, 4);
-//     arr = rotate(arr, 4);
-//     arr = rotate(arr, 4);
-//     console.log("\n");
-//     console.log(arr.join("\n"));
+var validateBoard = function (arr) {
+    console.log(arr.join("\n"));
+    arr = rotate(arr, 4);
+    // arr = rotate(arr, 4);
+    // arr = rotate(arr, 4);
+    console.log("\n");
+    console.log(arr.join("\n"));
 
-//     for (var i = 0; i < 4; i++) { //iterate through the 'rows'
-//         var lHint = hintArrs.bottom[i];
-//         var rHint = hintArrs.top[i];
-//         if (arr[i].sort() !== [1, 2, 3, 4]) return false;
-//         for (let c = 0; c < arr[i].length; c++) {
-//             var Lview = visible(arr[i].toString())[0]
-//             var Rview = visible(arr[i].toString())[1]
-//             if (!((rHint === Rview) || rHint === 0) && !((lHint === Lview) || lHint === 0)) {
-//                 return false;
-//             }
-//         }
-//     }
-//     return true;
-//     //convert the rows into coloumns
-//     //validate each coloumn
-//     //if theyre all valid, then they're done
-// }
+    for (var i = 0; i < 4; i++) { //iterate through the 'rows'
+        var lHint = hintArrs.bottom[i];
+        var rHint = hintArrs.top[i];
+        if (arr[i].sort() !== [1, 2, 3, 4]) return false;
+        for (let c = 0; c < arr[i].length; c++) {
+            var Lview = visible(arr[i].toString())[0]
+            var Rview = visible(arr[i].toString())[1]
+            if (!((rHint === Rview) || rHint === 0) && !((lHint === Lview) || lHint === 0)) {
+                return false;
+            }
+        }
+    }
+    return true;
+    //convert the rows into coloumns
+    //validate each coloumn
+    //if theyre all valid, then they're done
+}
 
 var validate = function (board) {
     var colViews = [];
@@ -174,15 +175,17 @@ var validate = function (board) {
     return true;
 }
 var isCompatible = function (views, hints) {
-    if ((views[0] !== hints[0]) && hints[0] !== 0) {
+    if (hints[0] === 0 && hints[1] === 0) return true;
+    if ((views[0] !== hints[0]) && hints[0] === 0) {
         return false;
     }
-    if ((views[1] !== hints[1]) && hints[0] !== 0) {
+    if ((views[1] !== hints[1]) && hints[0] === 0) {
         return false;
     }
     return true;
 }
 function rotate(matrix) {
+    //console.log(matrix.join('\n'));
     var n = matrix.length;
     for (var i = 0; i < n / 2; i++) {
         for (var j = 0; j < Math.ceil(n / 2); j++) {
@@ -195,41 +198,101 @@ function rotate(matrix) {
     }
     return matrix;
 }
+
+var val = function (board, hints) {
+    if (!validateHints(board, hints)) return false;
+    board = rotate(board);
+    console.log(board);
+    for (var i = 0; i < board.length; i++) {
+        //console.log("called", board[i]);
+        if (board[i].sort().toString() !== '1,2,3,4') return false;
+    }
+    return true;
+}
+
+var permutations = permut['1234'];
+
 var bruteForce = function () {
-    for (var a = 0; a < rowPosibs[0].length; a++) {
-        for (var b = 0; b < rowPosibs[1].length; b++) {
-            for (var c = 0; c < rowPosibs[2].length; c++) {
-                for (var d = 0; d < rowPosibs[3].length; d++) {
+    var i = 0;
+    // for (var a = 0; a < rowPosibs[0].length; a++) {
+    //     for (var b = 0; b < rowPosibs[1].length; b++) {
+    //         for (var c = 0; c < rowPosibs[2].length; c++) {
+    //             for (var d = 0; d < rowPosibs[3].length; d++) {
+    //                 console.log(i++);
+    //                 var iteration = [
+    //                     rowPosibs[0][a].split(''),
+    //                     rowPosibs[1][b].split(''),
+    //                     rowPosibs[2][c].split(''),
+    //                     rowPosibs[3][d].split(''),
+    //                 ]
+    //                 if (validate(iteration)) return iteration;
+    //             }
+    //         }
+    //     }
+    // }
+    for (var a = 0; a < permutations.length; a++) {
+        for (var b = 0; b < permutations.length; b++) {
+            for (var c = 0; c < permutations.length; c++) {
+                for (var d = 0; d < permutations.length; d++) {
+                    console.log(i++);
                     var iteration = [
-                        rowPosibs[0][a].split(''),
-                        rowPosibs[1][b].split(''),
-                        rowPosibs[2][c].split(''),
-                        rowPosibs[3][d].split(''),
+                        permutations[a].split(''),
+                        permutations[b].split(''),
+                        permutations[c].split(''),
+                        permutations[d].split(''),
                     ]
-                    if (validate(iteration)) return iteration;
+                    if (validateBoard(iteration)) {
+                        console.log(iteration.join('\n'));
+                        return iteration;
+                    }
                 }
             }
         }
     }
+    console.log("well then");
 }
-// // console.log(visible(test));
-// var arr = permut(test);
-// fillCombos(arr);
-// splitHints(hints1);
-// reduceWithHint(hintArrs, combos);
 
-// console.log("\n\n\n------------------");
-// console.log(
-// bruteForce()
-// );
 var solver = function (clues) {
+    permutations = permut('1234');
     splitHints(clues)
     fillCombos(permut('1234'));
     reduceWithHint(hintArrs, combos);
-    var ans = bruteForce();
-    rotate(ans);
-    rotate(ans);
-    rotate(ans);
-    return ans;
+    //var ans = bruteForce();
+    console.log(combos);
+    // rotate(ans);
+    // rotate(ans);
+    // rotate(ans);
+    //return ans;
     //console.log("finished: ", bruteForce());
 }
+
+var validateHints = function (board, clues) {
+    //always left to right
+    var line = [];
+    for (var i = 0; i < clues.length; i++) {
+        if (clues[i] != 0) {
+            if (clues[i] < 4) {
+                line = [board[0][i], board[1][i], board[2][i], board[3][i]]
+            } else if (clues[i] < 8) {
+                line = [board[i][3], board[i][2], board[i][1], board[i][0]];
+            } else if (clues[i] < 12) {
+                var num = 11 - i;
+                line = [board[3][num], board[2][num], board[1][num], board[0][num]]
+            } else {
+                line = [board[i][0], board[i][1], board[i][2], board[i][3]];
+            }
+            var highest = 0;
+            var views = 0;
+            for (var i = 0; i < line.length; i++) {
+                if (line[i] > highest) {
+                    highest = line[i];
+                    views++;
+                }
+            }
+            if (views != clues[i]) return false;
+        }
+    }
+    return true;
+}
+
+module.exports = solver;
