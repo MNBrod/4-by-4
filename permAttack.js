@@ -19,3 +19,58 @@ function permut(string) {
     }
     return permutations;
 }
+var test = '1234';
+
+var visible = function (str) {
+    var arr = str.split('');
+    var highest = 0;
+    var Lviews = 0;
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] > highest) {
+            highest = arr[i];
+            Lviews++;
+        }
+    }
+    highest = 0;
+    var Rviews = 0;
+    for (var i = arr.length-1; i > -1; i--) {
+        if (arr[i] > highest) {
+            highest = arr[i];
+            Rviews++;
+        }
+    }
+    return [Lviews, Rviews];
+
+}
+var combos = {};
+
+var fillCombos = function (arr) {
+    for (var i = 0; i < arr.length; i++) {
+        var views = visible(arr[i]);
+        combos[arr[i]] = {right: views[0], left: views[1]};
+    }
+console.log(combos);
+}
+
+var rowPosibs = {
+    0: [],
+    1: [],
+    2: [],
+    3: []
+};
+
+var reduceWithHint = function (hint, com) {
+    var result = [];
+    var keys = Object.keys(com);
+    var vals = Object.values(com);
+    for (var i = 0; i < key.length; i++) {
+        if (vals[i].right === hint) {
+            result.push(vals[i].right)
+        }
+    }
+    return result;
+}
+
+// console.log(visible(test));
+var arr = permut('1234');
+fillCombos(arr);
