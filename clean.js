@@ -28,12 +28,17 @@ function rotate(board) {
 }
 
 var validateHints = function (board, clues) {
-  for (var i = 0; i < clues.length; i++) {
+  for (let i = 0; i < clues.length; i++) {
     if (clues[i] !== 0) {
       let line = makeLine(board, i)
-      if (!validateLine(line, clues[i])) return false;
+      console.log(line, clues[i], "        (", i, ")");
+      if (!validateLine(line, clues[i])) {
+        console.log(" ^ is false");
+        return false;
+      }
     }
   }
+  console.log("^ is true");
   return true;
 }
 

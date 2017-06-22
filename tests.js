@@ -46,24 +46,26 @@ var tests = true;
 if (tests) {
   console.log("\nTESTS:\n");
   console.log(chalk.green("\nMake Line tests:"));
-  console.log(solver.makeLine(makeLinesHor, 4).toString() === '4,3,2,1');
-  console.log(solver.makeLine(makeLinesVert, 11).toString() === '4,3,2,1');
-  console.log(solver.makeLine(makeLinesHor, 15).toString() === '1,2,3,4');
-  console.log(solver.makeLine(makeLinesVert, 0).toString() === '1,2,3,4');
+  console.log(chalk.blue(solver.makeLine(makeLinesHor, 4).toString() === '4,3,2,1'));
+  console.log(chalk.blue(solver.makeLine(makeLinesVert, 11).toString() === '4,3,2,1'));
+  console.log(chalk.blue(solver.makeLine(makeLinesHor, 15).toString() === '1,2,3,4'));
+  console.log(chalk.blue(solver.makeLine(makeLinesVert, 0).toString() === '1,2,3,4'));
+  console.log(chalk.blue(solver.makeLine(ans3, 2).toString() === '1,2,4,3'));
 
   console.log(chalk.green("\nValidate Count:"));
-  console.log(solver.validateRows(validateRowsBoard));
-  console.log(solver.validateRows(solver.rotate(validateRowsBoard)));
+  console.log(chalk.blue(solver.validateRows(validateRowsBoard)));
+  console.log(chalk.blue(solver.validateRows(solver.rotate(validateRowsBoard))));
 
   console.log(chalk.green("\nValidate Hints:"));
-  console.log(solver.validateHints(ans3, hint3));
-  console.log(!solver.validateHints(ans3, hintFake2));
-  console.log(solver.validateHints(ans3, hintAll));
-  console.log(!solver.validateHints(ans3, hintFake));
-  console.log(!solver.validateHints(makeLinesHor, hint3));
+  console.log(chalk.blue(solver.validateHints(ans3, hint3)));
+  //console.log(chalk.blue(!solver.validateHints(ans3, hintFake2)));
+  console.log(chalk.blue(solver.validateHints(ans3, hintAll)));
+  //console.log(chalk.blue(!solver.validateHints(ans3, hintFake)));
+  console.log(chalk.blue(!solver.validateHints(makeLinesHor, hint3)));
 
 
   console.log(chalk.green("\nVal:"));
+  //why is this handing in 4, 3, 2, 1. is it mapping to 5???
   console.log(solver.val(ans3, hint3));
 
 }
