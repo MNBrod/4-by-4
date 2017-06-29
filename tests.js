@@ -3,7 +3,7 @@ var chalk = require('chalk');
 
 var hint3 = [0, 0, 3, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0]
 var hintFake = [0, 0, 3, 0, 1, 4, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0]
-var hintFake2 = [0, 0, 3, 0, 1, 4, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0]
+var hintFake2 = [3, 0, 3, 0, 1, 4, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0]
 var hintAll = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 var ans3 = [
   [3, 2, 1, 4],
@@ -42,7 +42,7 @@ var validateRowsBoard = [
  *    11   9
  *       10  8
  */
-var tests = true;
+var tests = false;
 if (tests) {
   console.log("\nTESTS:\n");
   console.log(chalk.green("\nMake Line tests:"));
@@ -67,11 +67,15 @@ if (tests) {
   console.log(chalk.green("\nVal:"));
   //why is this handing in 4, 3, 2, 1. is it mapping to 5???
   console.log(solver.val(ans3, hint3));
+  console.log(solver.val(ans3, hintAll));
+  console.log(solver.val(ans3, hintFake2));
 
 }
 // console.log(solver.rotate(validateRowsBoard).join('\n'));
-
-// solver.solver(hint3);
+var startTime = new Date();
+solver.solver([0, 0, 1, 2, 0, 2, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0]);
+var endTime = new Date();
+console.log(startTime - endTime);
 
 
   // console.log(solver.validateHints([1, 2, 3, 4], 4));
